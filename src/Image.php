@@ -284,7 +284,8 @@ class Image extends Base
             return $hash;
         }
         if ('201' == $response->getStatusCode()) {
-            $location = reset($response->getHeader('Location'));
+            $location = $response->getHeader('Location');
+            $location = reset($location);
             // Check if we got a Location header, otherwise something went wrong here.
             if (empty($location)) {
                 return false;
