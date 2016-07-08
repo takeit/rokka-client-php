@@ -186,15 +186,23 @@ class Image extends Base
      * @param string $stackName       Name of the stack
      * @param array  $stackOperations Stack operations
      * @param string $organization    Optional organization name
+     * @param array  $stackOptions    Stack options
      *
      * @return Stack
      */
-    public function createStack($stackName, array $stackOperations, $organization = '')
+    public function createStack($stackName, array $stackOperations, $organization = '', array $stackOptions = [])
     {
+        $stackData = [
+            'operations' => $stackOperations,
+            'options' => $stackOptions,
+        ];
+
         $contents = $this
-            ->call('PUT', implode('/', [self::STACK_RESOURCE, $this->getOrganization($organization), $stackName]), ['json' =>
-                                                                                                                        $stackOperations
-            ])
+            ->call(
+                'PUT',
+                implode('/', [self::STACK_RESOURCE, $this->getOrganization($organization), $stackName]),
+                ['json' => $stackData]
+            )
             ->getBody()
             ->getContents();
 

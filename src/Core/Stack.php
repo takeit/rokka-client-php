@@ -30,18 +30,25 @@ class Stack
     public $stackOperations;
 
     /**
+     * @var array Collection of stack options that this stack has
+     */
+    public $stackOptions;
+
+    /**
      * Constructor
      *
      * @param string    $organization    Organization name
      * @param string    $name            Stack name
      * @param array     $stackOperations Collection of stack operations
+     * @param array     $stackOptions    Collection of stack options
      * @param \DateTime $created         Created at
      */
-    public function __construct($organization, $name, array $stackOperations, \DateTime $created)
+    public function __construct($organization, $name, array $stackOperations, array $stackOptions, \DateTime $created)
     {
         $this->organization = $organization;
         $this->name = $name;
         $this->stackOperations = $stackOperations;
+        $this->stackOptions = $stackOptions;
         $this->created = $created;
     }
 
@@ -68,6 +75,7 @@ class Stack
             $data['organization'],
             $data['name'],
             $stack_operations,
+            $data['stack_options'],
             new \DateTime($data['created'])
         );
     }
@@ -110,6 +118,16 @@ class Stack
     public function getStackOperations()
     {
         return $this->stackOperations;
+    }
+
+    /**
+     * Get the collection of Stack's options
+     *
+     * @return array
+     */
+    public function getStackOptions()
+    {
+        return $this->stackOptions;
     }
 
 }
