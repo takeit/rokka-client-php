@@ -264,9 +264,10 @@ class Image extends Base
      * Returns the new Hash for the SourceImage, it could be the same as the input one if the operation
      * did not change it.
      *
-     * @param DynamicMetadataInterface $dynamicMetadata
-     * @param string $hash Source  The Source Image hash
-     * @param string $organization Optional organization name
+     * @param DynamicMetadataInterface $dynamicMetadata The Dynamic Metadata
+     * @param string                   $hash            The Image hash
+     * @param string                   $organization    Optional organization name
+     *
      * @return string|false
      */
     public function setDynamicMetadata(DynamicMetadataInterface $dynamicMetadata, $hash, $organization = '') {
@@ -284,21 +285,76 @@ class Image extends Base
             return $hash;
         }
         if ('201' == $response->getStatusCode()) {
-            $location = $response->getHeader('Location');
-            $location = reset($location);
-            // Check if we got a Location header, otherwise something went wrong here.
-            if (empty($location)) {
-                return false;
-            }
-
-            $uri = new Uri($location);
-            $parts = explode('/', $uri->getPath());
-            // Returning just the HASH part for "api.rokka.io/organization/sourceimages/{HASH}"
-            return array_pop($parts);
+            return $this->extractHashFromLocationHeader($response->getHeader('Location'));
         }
 
         // Throw an exception to be handled by the caller.
         throw new \LogicException($response->getBody()->getContents(), $response->getStatusCode());
+    }
+
+    /**
+     * Delete the given DynamicMetadata from a SourceImage.
+     * Returns the new Hash for the SourceImage, it could be the same as the input one if the operation
+     * did not change it.
+     *
+     * @param string $dynamicMetadataName The DynamicMetadata name
+     * @param string $hash                The Image hash
+     * @param string $organization        Optional organization name
+     *
+     * @return string|false
+     */
+    public function deleteDynamicMetadata($dynamicMetadataName, $hash, $organization = '') {
+
+        if (empty($hash)) {
+            throw new \LogicException('Missing image Hash.');
+        }
+
+        if (empty($dynamicMetadataName)) {
+            throw new \LogicException('Missing DynamicMetadata name.');
+        }
+
+        $path = implode('/', [
+            self::SOURCEIMAGE_RESOURCE,
+            $this->getOrganization($organization),
+            $hash,
+            self::DYNAMIC_META_RESOURCE,
+            $dynamicMetadataName
+        ]);
+
+        $response = $this->call('DELETE', $path);
+
+        if ('204' == $response->getStatusCode()) {
+            return $hash;
+        }
+        if ('201' == $response->getStatusCode()) {
+            return $this->extractHashFromLocationHeader($response->getHeader('Location'));
+        }
+
+        // Throw an exception to be handled by the caller.
+        throw new \LogicException($response->getBody()->getContents(), $response->getStatusCode());
+    }
+
+    /**
+     * Helper function to extract from a Location header the image hash, only the first Location is used.
+     *
+     * @param array $headers The collection of Location headers
+     *
+     * @return string|false
+     */
+    protected function extractHashFromLocationHeader(array $headers)
+    {
+        $location = reset($location);
+
+        // Check if we got a Location header, otherwise something went wrong here.
+        if (empty($location)) {
+            return false;
+        }
+
+        $uri = new Uri($location);
+        $parts = explode('/', $uri->getPath());
+
+        // Returning just the HASH part for "api.rokka.io/organization/sourceimages/{HASH}"
+        return array_pop($parts);
     }
 
     /**
