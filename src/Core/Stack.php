@@ -71,11 +71,16 @@ class Stack
             $stack_operations[] = StackOperation::createFromJsonResponse($operation, true);
         }
 
+        $stack_options = array();
+        if (isset($data['stack_options'])) {
+            $stack_options = $data['stack_options'];
+        }
+
         return new Stack(
             $data['organization'],
             $data['name'],
             $stack_operations,
-            $data['stack_options'],
+            $stack_options,
             new \DateTime($data['created'])
         );
     }
