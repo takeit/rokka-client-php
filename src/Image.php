@@ -351,7 +351,7 @@ class Image extends Base
      */
     protected function extractHashFromLocationHeader(array $headers)
     {
-        $location = reset($location);
+        $location = reset($headers);
 
         // Check if we got a Location header, otherwise something went wrong here.
         if (empty($location)) {
