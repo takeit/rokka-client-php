@@ -67,7 +67,7 @@ class User extends Base
      *
      * @param string $name Organization name
      *
-     * @return UserModel
+     * @return Organization
      */
     public function getOrganization($name)
     {
