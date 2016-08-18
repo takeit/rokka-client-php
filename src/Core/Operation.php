@@ -3,14 +3,12 @@
 namespace Rokka\Client\Core;
 
 /**
- * Operation
- *
- * Represents an operation
+ * Represents a single operation to be executed on an image.
  */
 class Operation
 {
     /**
-     * Name
+     * Descriptive name of the operation.
      *
      * @var string
      */
@@ -66,7 +64,7 @@ class Operation
 
     /**
      * Get Required properties
-     * 
+     *
      * @return array
      */
     public function getRequired()

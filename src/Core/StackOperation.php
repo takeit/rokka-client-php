@@ -3,8 +3,6 @@
 namespace Rokka\Client\Core;
 
 /**
- * StackOperation
- *
  * Represents an operation with configuration
  */
 class StackOperation
@@ -49,7 +47,7 @@ class StackOperation
     }
 
     /**
-     * Create a stack operation from the JSON data.
+     * Create a stack operation from the JSON data returned by the rokka.io API.
      *
      * @param string|array $data    JSON data
      * @param boolean      $isArray If the data provided is already an array

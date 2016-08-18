@@ -3,8 +3,6 @@
 namespace Rokka\Client\Core;
 
 /**
- * Class Stack
- *
  * Represents a collection of stack operations for an organization
  */
 class Stack
@@ -53,7 +51,7 @@ class Stack
     }
 
     /**
-     * Create a stack from the JSON data.
+     * Create a stack from the JSON data returned by the rokka.io API.
      *
      * @param string|array $data    JSON data
      * @param boolean      $isArray If the data provided is already an array

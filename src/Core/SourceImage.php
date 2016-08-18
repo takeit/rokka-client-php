@@ -5,8 +5,6 @@ namespace Rokka\Client\Core;
 use Rokka\Client\Core\DynamicMetadata\DynamicMetadataInterface;
 
 /**
- * Class SourceImage
- *
  * Represents the metadata of an image
  */
 class SourceImage

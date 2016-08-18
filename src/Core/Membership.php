@@ -3,9 +3,7 @@
 namespace Rokka\Client\Core;
 
 /**
- * Membership
- *
- * Represents a membership of a user
+ * Represents the relation of a user to an organization.
  */
 class Membership
 {
@@ -58,7 +56,7 @@ class Membership
     }
 
     /**
-     * Create a user from the JSON data.
+     * Create a user from the JSON data returned by the rokka.io API.
      *
      * @param string $jsonString JSON as a string
      *

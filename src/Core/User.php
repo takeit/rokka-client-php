@@ -3,8 +3,6 @@
 namespace Rokka\Client\Core;
 
 /**
- * User
- *
  * Represents a user
  */
 class User
@@ -54,7 +52,7 @@ class User
     }
 
     /**
-     * Create a user from the JSON data.
+     * Create a user from the JSON data returned by the rokka.io API.
      *
      * @param string $jsonString JSON as a string
      *
