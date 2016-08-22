@@ -3,23 +3,21 @@
 namespace Rokka\Client\Core;
 
 /**
- * OperationCollection.
- *
- * Represents a collection of operations
+ * Represents a collection of image transformation operations in a stack.
  */
 class OperationCollection implements \Countable
 {
     /**
      * Array of operations.
      *
-     * @var array
+     * @var Operation[]
      */
     private $operations = [];
 
     /**
      * Constructor.
      *
-     * @param array $operations Array of operations
+     * @param Operation[] $operations Array of operations
      */
     public function __construct(array $operations)
     {
@@ -27,7 +25,7 @@ class OperationCollection implements \Countable
     }
 
     /**
-     * Return count of operations.
+     * Return number of operations.
      *
      * @return int
      */
@@ -39,7 +37,7 @@ class OperationCollection implements \Countable
     /**
      * Return operations.
      *
-     * @return array
+     * @return Operation[]
      */
     public function getOperations()
     {
@@ -47,7 +45,7 @@ class OperationCollection implements \Countable
     }
 
     /**
-     * Create a collection from the JSON data.
+     * Create a collection from the JSON data returned by the rokka.io API.
      *
      * @param string $jsonString JSON as a string
      *

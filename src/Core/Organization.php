@@ -3,7 +3,9 @@
 namespace Rokka\Client\Core;
 
 /**
- * Organization
+ * Organizations are independent instances of the Rokka service.
+ *
+ * Images and stacks are always managed in the context of an organization.
  *
  * Users can be part of multiple organizations.
  */
