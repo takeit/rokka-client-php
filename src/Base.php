@@ -15,7 +15,6 @@ abstract class Base
 
     const API_KEY_HEADER = 'Api-Key';
     const API_VERSION_HEADER = 'Api-Version';
-    const API_SIGNATURE_HEADER = 'Api-Signature';
 
     /**
      * @var integer
@@ -77,41 +76,9 @@ abstract class Base
         $options['headers'][self::API_VERSION_HEADER] = $this->apiVersion;
 
         if ($needsCredentials) {
-            $url = (string) $this->client->getConfig('base_uri');
-            $dataToHash = $this->credentials['secret'] . $url . '/' . $path;
-
-            if (isset($options['query'])) {
-                $dataToHash .= '?' . http_build_query($options['query']);
-            }
-
-            if (in_array($method, ['POST', 'PUT', 'PATCH'])) {
-                $dataToHash .= sha1($this->getEncodedBodyData($options));
-            }
-
-            $options['headers'][self::API_SIGNATURE_HEADER] = sha1($dataToHash);
-            $options['headers'][self::API_KEY_HEADER]       = $this->credentials['key'];
+            $options['headers'][self::API_KEY_HEADER] = $this->credentials['key'];
         }
 
         return $this->client->request($method, $path, $options);
-    }
-
-    /**
-     * Return JSON encoded body data for creating sha1 strings.
-     *
-     * @param array $options Options
-     *
-     * @return string
-     */
-    private function getEncodedBodyData(array $options)
-    {
-        if (isset($options['json'])) {
-            return json_encode($options['json']);
-        }
-
-        if (isset($options['multipart'])) {
-            return json_encode($options['multipart']);
-        }
-
-        return '';
     }
 }
