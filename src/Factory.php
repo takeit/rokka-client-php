@@ -60,7 +60,7 @@ class Factory
     private static function getGuzzleClient($baseUrl)
     {
         $handlerStack = HandlerStack::create();
-        $handlerStack->push(Middleware::retry(self::retryDecider(), self::retryDelay()));
+        $handlerStack->unshift(Middleware::retry(self::retryDecider(), self::retryDelay()));
         return new GuzzleClient(array('base_uri' => $baseUrl, 'handler' => $handlerStack));
     }
 
