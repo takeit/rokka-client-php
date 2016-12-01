@@ -5,7 +5,6 @@ namespace Rokka\Client;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\Request;
@@ -60,7 +59,7 @@ class Factory
      */
     private static function getGuzzleClient($baseUrl)
     {
-        $handlerStack = HandlerStack::create(new CurlHandler());
+        $handlerStack = HandlerStack::create();
         $handlerStack->push(Middleware::retry(self::retryDecider(), self::retryDelay()));
         return new GuzzleClient(array('base_uri' => $baseUrl, 'handler' => $handlerStack));
     }
