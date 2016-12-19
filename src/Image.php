@@ -3,6 +3,7 @@
 namespace Rokka\Client;
 
 use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Message\UriInterface;
 use Rokka\Client\Core\DynamicMetadata\DynamicMetadataInterface;
@@ -81,11 +82,21 @@ class Image extends Base
      * @param string $hash         Hash of the image
      * @param string $organization Optional organization name
      *
-     * @return boolean True if succesful
+     * @throws GuzzleException If the request fails for a different reason than image not found
+     *
+     * @return boolean True if successful, false if image not found
      */
     public function deleteSourceImage($hash, $organization = '')
     {
-        $response = $this->call('DELETE', implode('/', [self::SOURCEIMAGE_RESOURCE, $this->getOrganization($organization), $hash]));
+        try {
+            $response = $this->call('DELETE', implode('/', [self::SOURCEIMAGE_RESOURCE, $this->getOrganization($organization), $hash]));
+        } catch (GuzzleException $e) {
+            if (404 == $e->getCode()) {
+                return false;
+            }
+
+            throw $e;
+        }
 
         return '204' == $response->getStatusCode();
     }
