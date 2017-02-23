@@ -386,7 +386,7 @@ class Image extends Base
         $baseHost = array_pop($parts);
 
         // Building path
-        $path = $stack . '/' . $hash;
+        $path = '/' . $stack . '/' . $hash;
 
         if (null !== $name) {
             $path .= '/' . $name;
@@ -394,7 +394,7 @@ class Image extends Base
 
         $path .= '.' . $format;
 
-        // Building the URI as "{scheme}://{organization}.{baseHost}[:{port}]/{stackName}/{hash}"
+        // Building the URI as "{scheme}://{organization}.{baseHost}[:{port}]/{stackName}/{hash}[/{name}].{format}"
         $parts = [
             'scheme' => $apiUri->getScheme(),
             'port'   => $apiUri->getPort(),
