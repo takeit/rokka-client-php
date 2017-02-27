@@ -3,7 +3,7 @@
 namespace Rokka\Client\Core;
 
 /**
- * Represents a collection of stack operations for an organization
+ * Represents a collection of stack operations for an organization.
  */
 class Stack
 {
@@ -33,7 +33,7 @@ class Stack
     public $stackOptions;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string    $organization    Organization name
      * @param string    $name            Stack name
@@ -54,7 +54,7 @@ class Stack
      * Create a stack from the JSON data returned by the rokka.io API.
      *
      * @param string|array $data    JSON data
-     * @param boolean      $isArray If the data provided is already an array
+     * @param bool         $isArray If the data provided is already an array
      *
      * @return Stack
      */
@@ -64,17 +64,17 @@ class Stack
             $data = json_decode($data, true);
         }
 
-        $stack_operations = array();
+        $stack_operations = [];
         foreach ($data['stack_operations'] as $operation) {
             $stack_operations[] = StackOperation::createFromJsonResponse($operation, true);
         }
 
-        $stack_options = array();
+        $stack_options = [];
         if (isset($data['stack_options'])) {
             $stack_options = $data['stack_options'];
         }
 
-        return new Stack(
+        return new self(
             $data['organization'],
             $data['name'],
             $stack_operations,
@@ -84,7 +84,7 @@ class Stack
     }
 
     /**
-     * Get nanme of organization for url
+     * Get nanme of organization for url.
      *
      * @return string
      */
@@ -94,7 +94,7 @@ class Stack
     }
 
     /**
-     * Get name of stack for url
+     * Get name of stack for url.
      *
      * @return string
      */
@@ -104,7 +104,7 @@ class Stack
     }
 
     /**
-     * Get date of creation for this stack
+     * Get date of creation for this stack.
      *
      * @return \DateTime
      */
@@ -114,7 +114,7 @@ class Stack
     }
 
     /**
-     * Get collection of operations
+     * Get collection of operations.
      *
      * @return StackOperation[]
      */
@@ -124,7 +124,7 @@ class Stack
     }
 
     /**
-     * Get the collection of Stack's options
+     * Get the collection of Stack's options.
      *
      * @return array
      */
@@ -132,5 +132,4 @@ class Stack
     {
         return $this->stackOptions;
     }
-
 }

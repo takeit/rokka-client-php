@@ -14,7 +14,7 @@ use Rokka\Client\Core\Stack;
 use Rokka\Client\Core\StackCollection;
 
 /**
- * Image client for the rokka.io service
+ * Image client for the rokka.io service.
  */
 class Image extends Base
 {
@@ -24,7 +24,7 @@ class Image extends Base
     const OPERATIONS_RESOURCE = 'operations';
 
     /**
-     * Default organisation
+     * Default organisation.
      *
      * @var string
      */
@@ -53,7 +53,8 @@ class Image extends Base
      * @param string $fileName     Image file name
      * @param string $organization Optional organization
      *
-     * @throws \LogicException     If no image contents are provided to be uploaded
+     * @throws \LogicException If no image contents are provided to be uploaded
+     *
      * @return SourceImageCollection
      */
     public function uploadSourceImage($contents, $fileName, $organization = '')
@@ -63,12 +64,12 @@ class Image extends Base
         }
 
         $contents = $this
-            ->call('POST', self::SOURCEIMAGE_RESOURCE . '/' . $this->getOrganization($organization), ['multipart' => [
+            ->call('POST', self::SOURCEIMAGE_RESOURCE.'/'.$this->getOrganization($organization), ['multipart' => [
                 [
-                    'name'     => 'filedata',
+                    'name' => 'filedata',
                     'contents' => $contents,
-                    'filename' => $fileName
-                ]
+                    'filename' => $fileName,
+                ],
             ]])
             ->getBody()
             ->getContents();
@@ -84,7 +85,7 @@ class Image extends Base
      *
      * @throws GuzzleException If the request fails for a different reason than image not found
      *
-     * @return boolean True if successful, false if image not found
+     * @return bool True if successful, false if image not found
      */
     public function deleteSourceImage($hash, $organization = '')
     {
@@ -104,9 +105,9 @@ class Image extends Base
     /**
      * List source images.
      *
-     * @param null|integer $limit        Optional limit
-     * @param null|integer $offset       Optional offset
-     * @param string       $organization Optional organization name
+     * @param null|int $limit        Optional limit
+     * @param null|int $offset       Optional offset
+     * @param string   $organization Optional organization name
      *
      * @return SourceImageCollection
      */
@@ -119,7 +120,7 @@ class Image extends Base
         }
 
         $contents = $this
-            ->call('GET', self::SOURCEIMAGE_RESOURCE . '/' . $this->getOrganization($organization), $options)
+            ->call('GET', self::SOURCEIMAGE_RESOURCE.'/'.$this->getOrganization($organization), $options)
             ->getBody()
             ->getContents();
 
@@ -129,21 +130,21 @@ class Image extends Base
     /**
      * Load a source image's metadata from Rokka.
      *
-     * @param string  $hash         Hash of the image
-     * @param boolean $binaryHash   Use the binary hash to load the image metadata, rather than the normal hash.
-     * @param string  $organization Optional organization name
+     * @param string $hash         Hash of the image
+     * @param bool   $binaryHash   use the binary hash to load the image metadata, rather than the normal hash
+     * @param string $organization Optional organization name
      *
      * @return SourceImage
      */
     public function getSourceImage($hash, $binaryHash = false, $organization = '')
     {
         $options = [];
-        $path = self::SOURCEIMAGE_RESOURCE . '/' . $this->getOrganization($organization);
+        $path = self::SOURCEIMAGE_RESOURCE.'/'.$this->getOrganization($organization);
 
         if ($binaryHash) {
             $options['query'] = ['binaryHash' => $hash];
         } else {
-            $path .= '/' . $hash;
+            $path .= '/'.$hash;
         }
 
         $contents = $this
@@ -157,17 +158,18 @@ class Image extends Base
     /**
      * Get a source image's binary contents from Rokka.
      *
-     * @param string  $hash         Hash of the image
-     * @param string  $organization Optional organization name
+     * @param string $hash         Hash of the image
+     * @param string $organization Optional organization name
      *
      * @return string
      */
-    public function getSourceImageContents($hash, $organization = '') {
+    public function getSourceImageContents($hash, $organization = '')
+    {
         $path = implode('/', [
             self::SOURCEIMAGE_RESOURCE,
             $this->getOrganization($organization),
             $hash,
-            'download']
+            'download', ]
         );
 
         return $this
@@ -177,7 +179,7 @@ class Image extends Base
     }
 
     /**
-     * List operations
+     * List operations.
      *
      * @return OperationCollection
      */
@@ -192,7 +194,7 @@ class Image extends Base
     }
 
     /**
-     * Create a stack
+     * Create a stack.
      *
      * @param string $stackName       Name of the stack
      * @param array  $stackOperations Stack operations
@@ -221,11 +223,11 @@ class Image extends Base
     }
 
     /**
-     * List stacks
+     * List stacks.
      *
-     * @param null|integer $limit        Optional limit
-     * @param null|integer $offset       Optional offset
-     * @param string       $organization Optional organization name
+     * @param null|int $limit        Optional limit
+     * @param null|int $offset       Optional offset
+     * @param string   $organization Optional organization name
      *
      * @return StackCollection
      */
@@ -238,7 +240,7 @@ class Image extends Base
         }
 
         $contents = $this
-            ->call('GET', self::STACK_RESOURCE . '/' . $this->getOrganization($organization), $options)
+            ->call('GET', self::STACK_RESOURCE.'/'.$this->getOrganization($organization), $options)
             ->getBody()
             ->getContents();
 
@@ -246,7 +248,7 @@ class Image extends Base
     }
 
     /**
-     * Return a stack
+     * Return a stack.
      *
      * @param string $stackName    Stack name
      * @param string $organization Optional organization name
@@ -269,7 +271,7 @@ class Image extends Base
      * @param string $stackName    Delete the stack
      * @param string $organization Optional organization name
      *
-     * @return boolean True if successful
+     * @return bool True if successful
      */
     public function deleteStack($stackName, $organization = '')
     {
@@ -289,14 +291,14 @@ class Image extends Base
      *
      * @return string|false
      */
-    public function setDynamicMetadata(DynamicMetadataInterface $dynamicMetadata, $hash, $organization = '') {
-
+    public function setDynamicMetadata(DynamicMetadataInterface $dynamicMetadata, $hash, $organization = '')
+    {
         $path = implode('/', [
             self::SOURCEIMAGE_RESOURCE,
             $this->getOrganization($organization),
             $hash,
             self::DYNAMIC_META_RESOURCE,
-            $dynamicMetadata->getName()
+            $dynamicMetadata->getName(),
         ]);
 
         $response = $this->call('PUT', $path, ['json' => $dynamicMetadata]);
@@ -322,8 +324,8 @@ class Image extends Base
      *
      * @return string|false
      */
-    public function deleteDynamicMetadata($dynamicMetadataName, $hash, $organization = '') {
-
+    public function deleteDynamicMetadata($dynamicMetadataName, $hash, $organization = '')
+    {
         if (empty($hash)) {
             throw new \LogicException('Missing image Hash.');
         }
@@ -337,7 +339,7 @@ class Image extends Base
             $this->getOrganization($organization),
             $hash,
             self::DYNAMIC_META_RESOURCE,
-            $dynamicMetadataName
+            $dynamicMetadataName,
         ]);
 
         $response = $this->call('DELETE', $path);
@@ -377,7 +379,7 @@ class Image extends Base
     }
 
     /**
-     * Returns url for accessing the image
+     * Returns url for accessing the image.
      *
      * @param string $hash         Identifier Hash
      * @param string $stack        Stack to apply
@@ -397,20 +399,20 @@ class Image extends Base
         $baseHost = array_pop($parts);
 
         // Building path
-        $path = '/' . $stack . '/' . $hash;
+        $path = '/'.$stack.'/'.$hash;
 
         if (null !== $name) {
-            $path .= '/' . $name;
+            $path .= '/'.$name;
         }
 
-        $path .= '.' . $format;
+        $path .= '.'.$format;
 
         // Building the URI as "{scheme}://{organization}.{baseHost}[:{port}]/{stackName}/{hash}[/{name}].{format}"
         $parts = [
             'scheme' => $apiUri->getScheme(),
-            'port'   => $apiUri->getPort(),
-            'host'   => $this->getOrganization($organization) . '.' . $baseHost,
-            'path'   => $path,
+            'port' => $apiUri->getPort(),
+            'host' => $this->getOrganization($organization).'.'.$baseHost,
+            'path' => $path,
         ];
 
         return Uri::fromParts($parts);

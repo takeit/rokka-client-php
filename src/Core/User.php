@@ -3,40 +3,40 @@
 namespace Rokka\Client\Core;
 
 /**
- * Represents a user
+ * Represents a user.
  */
 class User
 {
     /**
-     * UUID v4
+     * UUID v4.
      *
      * @var string
      */
     public $id;
 
     /**
-     * Email of user
+     * Email of user.
      *
      * @var string
      */
     public $email;
 
     /**
-     * Key
+     * Key.
      *
      * @var string
      */
     public $apiKey;
 
     /**
-     * Secret
+     * Secret.
      *
      * @var string
      */
     public $apiSecret;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $id        Id
      * @param string $email     Email
@@ -62,11 +62,11 @@ class User
     {
         $data = json_decode($jsonString, true);
 
-        return new User($data['id'], $data['email'], $data['api_key'], $data['api_secret']);
+        return new self($data['id'], $data['email'], $data['api_key'], $data['api_secret']);
     }
 
     /**
-     * Get Id
+     * Get Id.
      *
      * @return string
      */
@@ -76,7 +76,7 @@ class User
     }
 
     /**
-     * Get Email
+     * Get Email.
      *
      * @return string
      */
@@ -86,7 +86,7 @@ class User
     }
 
     /**
-     * Get Api Key
+     * Get Api Key.
      *
      * @return string
      */
@@ -96,7 +96,7 @@ class User
     }
 
     /**
-     * Get Api Secret
+     * Get Api Secret.
      *
      * @return string
      */

@@ -9,43 +9,43 @@ class Membership
 {
     const ROLE_ADMIN = 'admin';
     const ROLE_WRITE = 'write';
-    const ROLE_READ  = 'read';
+    const ROLE_READ = 'read';
 
     /**
-     * UUID v4 of user
+     * UUID v4 of user.
      *
      * @var string
      */
     public $userId;
 
     /**
-     * UUID v4 of organization
+     * UUID v4 of organization.
      *
      * @var string
      */
     public $organizationId;
 
     /**
-     * Role
+     * Role.
      *
      * @var string
      */
     public $role;
 
     /**
-     * Active
+     * Active.
      *
-     * @var boolean
+     * @var bool
      */
     public $active;
 
     /**
-     * Constructor
+     * Constructor.
      *
-     * @param string  $userId         User id
-     * @param string  $organizationId Organization id
-     * @param string  $role           Role
-     * @param boolean $active         If it is active
+     * @param string $userId         User id
+     * @param string $organizationId Organization id
+     * @param string $role           Role
+     * @param bool   $active         If it is active
      */
     public function __construct($userId, $organizationId, $role, $active)
     {
@@ -66,8 +66,6 @@ class Membership
     {
         $data = json_decode($jsonString, true);
 
-        return new Membership($data['user_id'], $data['organization_id'], $data['role'], $data['active']);
+        return new self($data['user_id'], $data['organization_id'], $data['role'], $data['active']);
     }
-
 }
-

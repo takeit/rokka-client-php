@@ -19,7 +19,7 @@ use Rokka\Client\User as UserClient;
 class Factory
 {
     /**
-     * Return an image client
+     * Return an image client.
      *
      * @param string $organization Organization name
      * @param string $apiKey       API key
@@ -30,15 +30,13 @@ class Factory
      */
     public static function getImageClient($organization, $apiKey, $apiSecret, $baseUrl = BaseClient::DEFAULT_API_BASE_URL)
     {
-
         $client = self::getGuzzleClient($baseUrl);
-
 
         return new ImageClient($client, $organization, $apiKey, $apiSecret);
     }
 
     /**
-     * Return a user client
+     * Return a user client.
      *
      * @param string $baseUrl Optional base url
      *
@@ -52,24 +50,27 @@ class Factory
     }
 
     /**
-     * Returns a Guzzle client with a retry middleware
+     * Returns a Guzzle client with a retry middleware.
      *
      * @param string $baseUrl base url
-     * @return GuzzleClient   GuzzleClient to connect to the backend
+     *
+     * @return GuzzleClient GuzzleClient to connect to the backend
      */
     private static function getGuzzleClient($baseUrl)
     {
         $handlerStack = HandlerStack::create();
         $handlerStack->unshift(Middleware::retry(self::retryDecider(), self::retryDelay()));
-        return new GuzzleClient(array('base_uri' => $baseUrl, 'handler' => $handlerStack));
+
+        return new GuzzleClient(['base_uri' => $baseUrl, 'handler' => $handlerStack]);
     }
 
     /**
-     * Returns a Closure for the Retry Middleware to decide if it should retry the request when it failed
+     * Returns a Closure for the Retry Middleware to decide if it should retry the request when it failed.
      *
      * @return \Closure
      */
-    private static function retryDecider() {
+    private static function retryDecider()
+    {
         return function (
             $retries,
             Request $request,
@@ -77,20 +78,19 @@ class Factory
             RequestException $exception = null
         ) {
             // Limit the number of retries to 10
-            if ( $retries >= 10 ) {
+            if ($retries >= 10) {
                 return false;
             }
 
             // Retry connection exceptions
-            if( $exception instanceof ConnectException ) {
-
+            if ($exception instanceof ConnectException) {
                 return true;
             }
 
-            if( $response ) {
+            if ($response) {
                 // Retry on server errors or overload
                 $statusCode = $response->getStatusCode();
-                if($statusCode == 429 || $statusCode == 503 || $statusCode == 502) {
+                if ($statusCode == 429 || $statusCode == 503 || $statusCode == 502) {
                     return true;
                 }
             }
@@ -100,12 +100,13 @@ class Factory
     }
 
     /**
-     * Returns a Closure for the Retry Middleware to tell it how long it should wait
+     * Returns a Closure for the Retry Middleware to tell it how long it should wait.
      *
      * @return \Closure
      */
-    private static function retryDelay() {
-        return function($numberOfRetries) {
+    private static function retryDelay()
+    {
+        return function ($numberOfRetries) {
             return 2000 * $numberOfRetries;
         };
     }

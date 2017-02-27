@@ -12,21 +12,21 @@ namespace Rokka\Client\Core;
 class Organization
 {
     /**
-     * UUID v4
+     * UUID v4.
      *
      * @var string
      */
     public $id;
 
     /**
-     * Public display name
+     * Public display name.
      *
      * @var string
      */
     public $displayName;
 
     /**
-     * Organization name
+     * Organization name.
      *
      * Web safe, using in routes and api calls
      *
@@ -35,14 +35,14 @@ class Organization
     public $name;
 
     /**
-     * Email
+     * Email.
      *
      * @var string
      */
     public $billingEmail;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $id           Id
      * @param string $name         Name, used in urls etc
@@ -68,11 +68,11 @@ class Organization
     {
         $data = json_decode($jsonString, true);
 
-        return new Organization($data['id'], $data['name'], $data['display_name'], $data['billing_email']);
+        return new self($data['id'], $data['name'], $data['display_name'], $data['billing_email']);
     }
 
     /**
-     * Get Id
+     * Get Id.
      *
      * @return string
      */
@@ -82,7 +82,7 @@ class Organization
     }
 
     /**
-     * Get name for displaying
+     * Get name for displaying.
      *
      * @return string
      */
@@ -92,7 +92,7 @@ class Organization
     }
 
     /**
-     * Get name for url
+     * Get name for url.
      *
      * @return string
      */
@@ -102,7 +102,7 @@ class Organization
     }
 
     /**
-     * Get Billing Email
+     * Get Billing Email.
      *
      * @return string
      */
@@ -111,4 +111,3 @@ class Organization
         return $this->billingEmail;
     }
 }
-
