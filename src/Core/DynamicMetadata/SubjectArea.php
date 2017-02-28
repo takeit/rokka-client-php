@@ -55,7 +55,7 @@ class SubjectArea implements DynamicMetadataInterface
         }
 
         // Make sure to build the SubjectArea with correct defaults in case of missing attributes.
-        $data = array_merge(array('x' => 0, 'y' => 0, 'width' => 1, 'height' => 1), $data);
+        $data = array_merge(['x' => 0, 'y' => 0, 'width' => 1, 'height' => 1], $data);
 
         return new self(
             max(0, $data['x']),

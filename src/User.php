@@ -7,7 +7,7 @@ use Rokka\Client\Core\Organization;
 use Rokka\Client\Core\User as UserModel;
 
 /**
- * User management client for the rokka.io service
+ * User management client for the rokka.io service.
  */
 class User extends Base
 {
@@ -25,7 +25,7 @@ class User extends Base
     {
         $contents = $this
             ->call('POST', self::USER_RESOURCE, ['json' => [
-                'email' => $email
+                'email' => $email,
             ]], false)
             ->getBody()
             ->getContents()
@@ -46,7 +46,7 @@ class User extends Base
     public function createOrganization($name, $billingMail, $displayName = '')
     {
         $options = ['json' => [
-            'billing_email' => $billingMail
+            'billing_email' => $billingMail,
         ]];
 
         if (!empty($displayName)) {
@@ -54,7 +54,7 @@ class User extends Base
         }
 
         $contents = $this
-            ->call('PUT', self::ORGANIZATION_RESOURCE .'/' . $name, $options)
+            ->call('PUT', self::ORGANIZATION_RESOURCE.'/'.$name, $options)
             ->getBody()
             ->getContents()
         ;
@@ -63,7 +63,7 @@ class User extends Base
     }
 
     /**
-     * Return an organization
+     * Return an organization.
      *
      * @param string $name Organization name
      *
@@ -72,7 +72,7 @@ class User extends Base
     public function getOrganization($name)
     {
         $contents = $this
-            ->call('GET', self::ORGANIZATION_RESOURCE . '/' . $name)
+            ->call('GET', self::ORGANIZATION_RESOURCE.'/'.$name)
             ->getBody()
             ->getContents()
         ;
@@ -81,7 +81,7 @@ class User extends Base
     }
 
     /**
-     * Create a membership
+     * Create a membership.
      *
      * @param string $organization Organization
      * @param string $email        Email
@@ -93,7 +93,7 @@ class User extends Base
     {
         $contents = $this
             ->call('PUT', implode('/', [self::ORGANIZATION_RESOURCE, $organization, 'memberships', $email]), ['json' => [
-                'role' => strtolower($role)
+                'role' => strtolower($role),
             ]])
             ->getBody()
             ->getContents()
@@ -103,7 +103,7 @@ class User extends Base
     }
 
     /**
-     * Get the membership metadata for the given organization and user's email
+     * Get the membership metadata for the given organization and user's email.
      *
      * @param string $organization Organization
      * @param string $email        Email

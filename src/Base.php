@@ -6,7 +6,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
 
 /**
- * Base Client class
+ * Base Client class.
  */
 abstract class Base
 {
@@ -17,12 +17,12 @@ abstract class Base
     const API_VERSION_HEADER = 'Api-Version';
 
     /**
-     * @var integer
+     * @var int
      */
     private $apiVersion = self::DEFAULT_API_VERSION;
 
     /**
-     * Client to access Rokka
+     * Client to access Rokka.
      *
      * @var ClientInterface
      */
@@ -34,7 +34,7 @@ abstract class Base
      * @var array
      */
     private $credentials = [
-        'key'       => '',
+        'key' => '',
         'secret' => '',
     ];
 
@@ -53,8 +53,6 @@ abstract class Base
      *
      * @param string $key    API key
      * @param string $secret API secret
-     *
-     * @return void
      */
     public function setCredentials($key, $secret)
     {
@@ -64,10 +62,10 @@ abstract class Base
     /**
      * Call the API rokka endpoint.
      *
-     * @param string  $method           HTTP method to use
-     * @param string  $path             Path on the API
-     * @param array   $options          Request options
-     * @param boolean $needsCredentials True if credentials are needed
+     * @param string $method           HTTP method to use
+     * @param string $path             Path on the API
+     * @param array  $options          Request options
+     * @param bool   $needsCredentials True if credentials are needed
      *
      * @return Response
      */

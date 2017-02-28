@@ -15,21 +15,21 @@ class Operation
     public $name;
 
     /**
-     * Properties
+     * Properties.
      *
      * @var array
      */
     public $properties;
 
     /**
-     * Required parameters
+     * Required parameters.
      *
      * @var array
      */
     public $required;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $name       Name
      * @param array  $properties Properties
@@ -43,7 +43,7 @@ class Operation
     }
 
     /**
-     * Get Name
+     * Get Name.
      *
      * @return string
      */
@@ -53,7 +53,7 @@ class Operation
     }
 
     /**
-     * Get Properties
+     * Get Properties.
      *
      * @return array
      */
@@ -63,7 +63,7 @@ class Operation
     }
 
     /**
-     * Get Required properties
+     * Get Required properties.
      *
      * @return array
      */
@@ -72,4 +72,3 @@ class Operation
         return $this->required;
     }
 }
-

@@ -3,23 +3,23 @@
 namespace Rokka\Client\Core;
 
 /**
- * Represents an operation with configuration
+ * Represents an operation with configuration.
  */
 class StackOperation
 {
     /**
-     * Name of the operation
+     * Name of the operation.
      *
      * @var string
      */
     public $name;
 
     /**
-     * Configured options provided for the stack
+     * Configured options provided for the stack.
      *
      * @var array
      */
-    public $options = array();
+    public $options = [];
 
     /**
      * Constructor.
@@ -27,10 +27,10 @@ class StackOperation
      * @param string $name    Operation name
      * @param array  $options Optional options for the operation
      */
-    public function __construct($name, array $options = array())
+    public function __construct($name, array $options = [])
     {
         $this->name = $name;
-        $this->options   = $options;
+        $this->options = $options;
     }
 
     /**
@@ -41,7 +41,7 @@ class StackOperation
     public function toArray()
     {
         return [
-            'name'    => $this->name,
+            'name' => $this->name,
             'options' => $this->options,
         ];
     }
@@ -50,7 +50,7 @@ class StackOperation
      * Create a stack operation from the JSON data returned by the rokka.io API.
      *
      * @param string|array $data    JSON data
-     * @param boolean      $isArray If the data provided is already an array
+     * @param bool         $isArray If the data provided is already an array
      *
      * @return StackOperation
      */
@@ -60,6 +60,6 @@ class StackOperation
             $data = json_decode($data, true);
         }
 
-        return new StackOperation($data['name'], $data['options']);
+        return new self($data['name'], $data['options']);
     }
 }

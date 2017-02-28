@@ -3,19 +3,19 @@
 namespace Rokka\Client\Core;
 
 /**
- * Represents a collection of source images
+ * Represents a collection of source images.
  */
 class SourceImageCollection implements \Countable
 {
     /**
-     * Array of source images
+     * Array of source images.
      *
      * @var SourceImage[]
      */
     private $sourceImages = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param SourceImage[] $sourceImages Array of source images
      */
@@ -25,9 +25,9 @@ class SourceImageCollection implements \Countable
     }
 
     /**
-     * Return number of source images
+     * Return number of source images.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -35,7 +35,7 @@ class SourceImageCollection implements \Countable
     }
 
     /**
-     * Return source images
+     * Return source images.
      *
      * @return SourceImage[]
      */
@@ -59,7 +59,6 @@ class SourceImageCollection implements \Countable
             return SourceImage::createFromJsonResponse($sourceImage, true);
         }, $data['items']);
 
-        return new SourceImageCollection($sourceImages);
+        return new self($sourceImages);
     }
 }
-

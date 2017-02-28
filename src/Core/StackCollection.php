@@ -3,14 +3,14 @@
 namespace Rokka\Client\Core;
 
 /**
- * Holds a list of stacks
+ * Holds a list of stacks.
  */
 class StackCollection implements \Countable
 {
     /**
      * @var Stack[]
      */
-    private $stacks = array();
+    private $stacks = [];
 
     /**
      * Constructor.
@@ -29,9 +29,9 @@ class StackCollection implements \Countable
     }
 
     /**
-     * Return the number of stacks in this collection
+     * Return the number of stacks in this collection.
      *
-     * @return integer
+     * @return int
      */
     public function count()
     {
@@ -39,7 +39,7 @@ class StackCollection implements \Countable
     }
 
     /**
-     * Return the stacks
+     * Return the stacks.
      *
      * @return Stack[]
      */
@@ -52,7 +52,7 @@ class StackCollection implements \Countable
      * Create a stack from the JSON data returned by the rokka.io API.
      *
      * @param string|array $data    JSON data
-     * @param boolean      $isArray If the data provided is already an array
+     * @param bool         $isArray If the data provided is already an array
      *
      * @return StackCollection
      */
@@ -66,6 +66,6 @@ class StackCollection implements \Countable
             return Stack::createFromJsonResponse($stack, true);
         }, $data['items']);
 
-        return new StackCollection($stacks);
+        return new self($stacks);
     }
 }

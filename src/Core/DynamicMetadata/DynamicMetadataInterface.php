@@ -12,12 +12,12 @@ interface DynamicMetadataInterface
      */
     public function getName();
 
-
     /**
      * Create a DynamicMetadata from the JSON data.
      *
      * @param string|array $data    JSON data
-     * @param boolean      $isArray If the data provided is already an array
+     * @param bool         $isArray If the data provided is already an array
+     *
      * @return DynamicMetadataInterface
      */
     public static function createFromJsonResponse($data, $isArray = false);

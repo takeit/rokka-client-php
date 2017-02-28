@@ -5,7 +5,7 @@ namespace Rokka\Client\Core;
 use Rokka\Client\Core\DynamicMetadata\DynamicMetadataInterface;
 
 /**
- * Represents the metadata of an image
+ * Represents the metadata of an image.
  */
 class SourceImage
 {
@@ -35,17 +35,17 @@ class SourceImage
     public $format;
 
     /**
-     * @var integer Size of image in bytes
+     * @var int Size of image in bytes
      */
     public $size;
 
     /**
-     * @var integer Width of image in pixels
+     * @var int Width of image in pixels
      */
     public $width;
 
     /**
-     * @var integer Height of image in pixels
+     * @var int Height of image in pixels
      */
     public $height;
 
@@ -77,9 +77,9 @@ class SourceImage
      * @param string    $hash            Hash
      * @param string    $name            Original name
      * @param string    $format          Format
-     * @param integer   $size            File size in bytes
-     * @param integer   $width           Width in pixels
-     * @param integer   $height          Height in pixels
+     * @param int       $size            File size in bytes
+     * @param int       $width           Width in pixels
+     * @param int       $height          Height in pixels
      * @param array     $staticMetadata  Static metadata
      * @param array     $dynamicMetadata Dynamic metadata
      * @param \DateTime $created         Created at date
@@ -117,7 +117,7 @@ class SourceImage
      * Create a source image from the JSON data.
      *
      * @param string|array $data    JSON data
-     * @param boolean      $isArray If the data provided is already an array
+     * @param bool         $isArray If the data provided is already an array
      *
      * @return SourceImage
      */
@@ -136,8 +136,7 @@ class SourceImage
         // Rebuild the DynamicMetadata associated to the current SourceImage
         if (isset($data['dynamic_metadata']) && !empty($data['dynamic_metadata']['elements'])) {
             foreach ($data['dynamic_metadata']['elements'] as $name => $metadata) {
-
-                $metaClass = 'Rokka\Client\Core\DynamicMetadata\\' . $name;
+                $metaClass = 'Rokka\Client\Core\DynamicMetadata\\'.$name;
                 if (class_exists($metaClass)) {
                     /** @var DynamicMetadataInterface $metaClass */
                     $meta = $metaClass::createFromJsonResponse($metadata, true);
@@ -146,7 +145,7 @@ class SourceImage
             }
         }
 
-        return new SourceImage(
+        return new self(
             $data['organization'],
             $data['binary_hash'],
             $data['hash'],
