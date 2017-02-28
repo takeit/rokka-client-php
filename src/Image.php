@@ -357,31 +357,85 @@ class Image extends Base
         throw new \LogicException($response->getBody()->getContents(), $response->getStatusCode());
     }
 
+    /**
+     * Add (or update) the given user-metadata field to the image.
+     *
+     * @param string $field        The field name
+     * @param string $value        The field value
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
     public function setUserMetadataField($field, $value, $hash, $organization = '')
     {
         return $this->doUserMetadataRequest([$field => $value], $hash, 'PATCH', $organization);
     }
 
+    /**
+     * Add the given fields to the user-metadata of the image.
+     *
+     * @param array  $fields       An associative array of "field-name => value"
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
     public function addUserMetadata($fields, $hash, $organization = '')
     {
         return $this->doUserMetadataRequest($fields, $hash, 'PATCH', $organization);
     }
 
+    /**
+     * Set the given fields as the user-metadata of the image.
+     *
+     * @param array  $fields       An associative array of "field-name => value"
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
     public function setUserMetadata($fields, $hash, $organization = '')
     {
         return $this->doUserMetadataRequest($fields, $hash, 'PUT', $organization);
     }
 
+    /**
+     * Delete the user-metadata from the given image.
+     *
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
     public function deleteUserMetadata($hash, $organization = '')
     {
         return $this->doUserMetadataRequest(null, $hash, 'DELETE', $organization);
     }
 
+    /**
+     * Delete the given field from the user-metadata of the image.
+     *
+     * @param string $field        The field name
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
     public function deleteUserMetadataField($field, $hash, $organization = '')
     {
         return $this->doUserMetadataRequest([$field => null], $hash, 'PATCH', $organization);
     }
 
+    /**
+     * Delete the given fields from the user-metadata of the image.
+     *
+     * @param array  $fields       The fields name
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
     public function deleteUserMetadataFields($fields, $hash, $organization = '')
     {
         $data = [];
