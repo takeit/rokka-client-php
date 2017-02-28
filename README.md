@@ -6,7 +6,7 @@
 
 A [PHP](http://php.net/) library to access the API of the [Rokka](https://rokka.io/) image service.
 
-If you are using the Symfony framework, have a look at the [Rokka Symfony Bundle](https://raw.githubusercontent.com/rokka-io/rokka-client-bundle) which integrates this library into Symfony.
+If you are using the Symfony framework, have a look at the [Rokka Symfony Bundle](https://github.com/rokka-io/rokka-client-bundle) which integrates this library into Symfony.
 
 ## Installation
 
