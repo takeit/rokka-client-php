@@ -15,17 +15,44 @@ class SourceImageCollection implements \Countable
     private $sourceImages = [];
 
     /**
+     * The total amount of items from the collection, with pagination.
+     *
+     * @var int
+     */
+    private $total;
+
+    /**
+     * When more than 10k items are returned a cursor is also created.
+     *
+     * @var string
+     */
+    private $cursor;
+
+    /**
+     * Pagination and other links returned by the API.
+     *
+     * @var array
+     */
+    private $links = [];
+
+    /**
      * Constructor.
      *
      * @param SourceImage[] $sourceImages Array of source images
+     * @param int           $total        The total amount of results matched
+     * @param array         $links        The navigation/browse links
+     * @param null          $cursor       The navigation cursor
      */
-    public function __construct(array $sourceImages)
+    public function __construct(array $sourceImages, $total, $links = [], $cursor = null)
     {
         $this->sourceImages = $sourceImages;
+        $this->total = $total;
+        $this->links = $links;
+        $this->cursor = $cursor;
     }
 
     /**
-     * Return number of source images.
+     * Return number in the collection.
      *
      * @return int
      */
@@ -35,7 +62,37 @@ class SourceImageCollection implements \Countable
     }
 
     /**
-     * Return source images.
+     * Returns the total amount of items available in the API for the current listing.
+     *
+     * @return int
+     */
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Returns the cursor value, if any.
+     *
+     * @return string
+     */
+    public function getCursor()
+    {
+        return $this->cursor;
+    }
+
+    /**
+     * Returns the pagination/navigation links.
+     *
+     * @return array
+     */
+    public function getLinks()
+    {
+        return $this->links;
+    }
+
+    /**
+     * Return the source images in the collection.
      *
      * @return SourceImage[]
      */
@@ -59,6 +116,10 @@ class SourceImageCollection implements \Countable
             return SourceImage::createFromJsonResponse($sourceImage, true);
         }, $data['items']);
 
-        return new self($sourceImages);
+        $total = isset($data['total']) ? $data['total'] : 0;
+        $links = isset($data['links']) ? $data['links'] : [];
+        $cursor = isset($data['cursor']) ? $data['cursor'] : null;
+
+        return new self($sourceImages, $total, $links, $cursor);
     }
 }
