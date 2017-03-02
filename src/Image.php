@@ -105,28 +105,66 @@ class Image extends Base
     }
 
     /**
-     * List source images.
+     * Search and list source images.
      *
-     * @param null|int $limit        Optional limit
-     * @param null|int $offset       Optional offset
-     * @param string   $organization Optional organization name
+     * Sort direction can either be: "asc", "desc" (or the boolean TRUE value, treated as "asc")
+     *
+     * @param array           $search       The search query, as an associative array "field => value"
+     * @param array           $sorts        The sorting parameters, as an associative array "field => sort-direction"
+     * @param int|null        $limit        Optional limit
+     * @param int|string|null $offset       Optional offset, either integer or the "Cursor" value
+     * @param string          $organization Optional organization name
      *
      * @return SourceImageCollection
      */
-    public function listSourceImages($limit = null, $offset = null, $organization = '')
+    public function searchSourceImages($search = [], $sorts = [], $limit = null, $offset = null, $organization = '')
     {
-        $options = [];
+        $options = ['query' => []];
 
-        if ($limit || $offset) {
-            $options = ['query' => ['limit' => $limit, 'offset' => $offset]];
+        $sort = SearchHelper::buildSearchSortParameter($sorts);
+        if (!empty($sort)) {
+            $options['query']['sort'] = $sort;
+        }
+
+        if (is_array($search) && !empty($search)) {
+            foreach ($search as $field => $value) {
+                if (!SearchHelper::validateFieldName($field)) {
+                    throw new \LogicException(sprintf('Invalid field name "%s" as search field', $field));
+                }
+
+                $options['query'][$field] = $value;
+            }
+        }
+
+        if (isset($limit)) {
+            $options['query']['limit'] = $limit;
+        }
+        if (isset($offset)) {
+            $options['query']['offset'] = $offset;
         }
 
         $contents = $this
-            ->call('GET', self::SOURCEIMAGE_RESOURCE.'/'.$this->getOrganization($organization), $options)
-            ->getBody()
-            ->getContents();
+          ->call('GET', self::SOURCEIMAGE_RESOURCE.'/'.$this->getOrganization($organization), $options)
+          ->getBody()
+          ->getContents();
 
         return SourceImageCollection::createFromJsonResponse($contents);
+    }
+
+    /**
+     * List source images.
+     *
+     * @param null|int        $limit        Optional limit
+     * @param null|int|string $offset       Optional offset, either integer or the "Cursor" value
+     * @param string          $organization Optional organization name
+     *
+     * @return SourceImageCollection
+     *
+     * @deprecated Use Image::searchSourceImages()
+     */
+    public function listSourceImages($limit = null, $offset = null, $organization = '')
+    {
+        return $this->searchSourceImages([], [], $limit, $offset, $organization);
     }
 
     /**
