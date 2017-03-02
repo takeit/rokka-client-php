@@ -20,6 +20,8 @@ class Image extends Base
 {
     const SOURCEIMAGE_RESOURCE = 'sourceimages';
     const DYNAMIC_META_RESOURCE = 'meta/dynamic';
+    const USER_META_RESOURCE = 'meta/user';
+
     const STACK_RESOURCE = 'stacks';
     const OPERATIONS_RESOURCE = 'operations';
 
@@ -353,6 +355,117 @@ class Image extends Base
 
         // Throw an exception to be handled by the caller.
         throw new \LogicException($response->getBody()->getContents(), $response->getStatusCode());
+    }
+
+    /**
+     * Add (or update) the given user-metadata field to the image.
+     *
+     * @param string $field        The field name
+     * @param string $value        The field value
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
+    public function setUserMetadataField($field, $value, $hash, $organization = '')
+    {
+        return $this->doUserMetadataRequest([$field => $value], $hash, 'PATCH', $organization);
+    }
+
+    /**
+     * Add the given fields to the user-metadata of the image.
+     *
+     * @param array  $fields       An associative array of "field-name => value"
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
+    public function addUserMetadata($fields, $hash, $organization = '')
+    {
+        return $this->doUserMetadataRequest($fields, $hash, 'PATCH', $organization);
+    }
+
+    /**
+     * Set the given fields as the user-metadata of the image.
+     *
+     * @param array  $fields       An associative array of "field-name => value"
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
+    public function setUserMetadata($fields, $hash, $organization = '')
+    {
+        return $this->doUserMetadataRequest($fields, $hash, 'PUT', $organization);
+    }
+
+    /**
+     * Delete the user-metadata from the given image.
+     *
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
+    public function deleteUserMetadata($hash, $organization = '')
+    {
+        return $this->doUserMetadataRequest(null, $hash, 'DELETE', $organization);
+    }
+
+    /**
+     * Delete the given field from the user-metadata of the image.
+     *
+     * @param string $field        The field name
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
+    public function deleteUserMetadataField($field, $hash, $organization = '')
+    {
+        return $this->doUserMetadataRequest([$field => null], $hash, 'PATCH', $organization);
+    }
+
+    /**
+     * Delete the given fields from the user-metadata of the image.
+     *
+     * @param array  $fields       The fields name
+     * @param string $hash         The image hash
+     * @param string $organization The organization name
+     *
+     * @return bool
+     */
+    public function deleteUserMetadataFields($fields, $hash, $organization = '')
+    {
+        $data = [];
+        foreach ($fields as $value) {
+            $data[$value] = null;
+        }
+
+        return $this->doUserMetadataRequest($data, $hash, 'PATCH', $organization);
+    }
+
+    private function doUserMetadataRequest($fields, $hash, $method, $organization = '')
+    {
+        $path = implode('/', [
+            self::SOURCEIMAGE_RESOURCE,
+            $this->getOrganization($organization),
+            $hash,
+            self::USER_META_RESOURCE,
+        ]);
+        $data = [];
+        if ($fields) {
+            foreach ($fields as $key => $value) {
+                if ($value instanceof \DateTime) {
+                    $fields[$key] = $value->setTimezone(new \DateTimeZone('UTC'))->format("Y-m-d\TH:i:s.v\Z");
+                }
+            }
+            $data = ['json' => $fields];
+        }
+        $response = $this->call($method, $path, $data);
+
+        return true;
     }
 
     /**
