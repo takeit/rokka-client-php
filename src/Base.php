@@ -17,16 +17,16 @@ abstract class Base
     const API_VERSION_HEADER = 'Api-Version';
 
     /**
-     * @var int
-     */
-    private $apiVersion = self::DEFAULT_API_VERSION;
-
-    /**
      * Client to access Rokka.
      *
      * @var ClientInterface
      */
     protected $client;
+
+    /**
+     * @var int
+     */
+    private $apiVersion = self::DEFAULT_API_VERSION;
 
     /**
      * Rokka credentials.

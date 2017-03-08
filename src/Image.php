@@ -484,51 +484,6 @@ class Image extends Base
         return $this->doUserMetadataRequest($data, $hash, 'PATCH', $organization);
     }
 
-    private function doUserMetadataRequest($fields, $hash, $method, $organization = '')
-    {
-        $path = implode('/', [
-            self::SOURCEIMAGE_RESOURCE,
-            $this->getOrganization($organization),
-            $hash,
-            self::USER_META_RESOURCE,
-        ]);
-        $data = [];
-        if ($fields) {
-            foreach ($fields as $key => $value) {
-                if ($value instanceof \DateTime) {
-                    $fields[$key] = $value->setTimezone(new \DateTimeZone('UTC'))->format("Y-m-d\TH:i:s.v\Z");
-                }
-            }
-            $data = ['json' => $fields];
-        }
-        $response = $this->call($method, $path, $data);
-
-        return true;
-    }
-
-    /**
-     * Helper function to extract from a Location header the image hash, only the first Location is used.
-     *
-     * @param array $headers The collection of Location headers
-     *
-     * @return string|false
-     */
-    protected function extractHashFromLocationHeader(array $headers)
-    {
-        $location = reset($headers);
-
-        // Check if we got a Location header, otherwise something went wrong here.
-        if (empty($location)) {
-            return false;
-        }
-
-        $uri = new Uri($location);
-        $parts = explode('/', $uri->getPath());
-
-        // Returning just the HASH part for "api.rokka.io/organization/sourceimages/{HASH}"
-        return array_pop($parts);
-    }
-
     /**
      * Returns url for accessing the image.
      *
@@ -567,6 +522,51 @@ class Image extends Base
         ];
 
         return Uri::fromParts($parts);
+    }
+
+    /**
+     * Helper function to extract from a Location header the image hash, only the first Location is used.
+     *
+     * @param array $headers The collection of Location headers
+     *
+     * @return string|false
+     */
+    protected function extractHashFromLocationHeader(array $headers)
+    {
+        $location = reset($headers);
+
+        // Check if we got a Location header, otherwise something went wrong here.
+        if (empty($location)) {
+            return false;
+        }
+
+        $uri = new Uri($location);
+        $parts = explode('/', $uri->getPath());
+
+        // Returning just the HASH part for "api.rokka.io/organization/sourceimages/{HASH}"
+        return array_pop($parts);
+    }
+
+    private function doUserMetadataRequest($fields, $hash, $method, $organization = '')
+    {
+        $path = implode('/', [
+            self::SOURCEIMAGE_RESOURCE,
+            $this->getOrganization($organization),
+            $hash,
+            self::USER_META_RESOURCE,
+        ]);
+        $data = [];
+        if ($fields) {
+            foreach ($fields as $key => $value) {
+                if ($value instanceof \DateTime) {
+                    $fields[$key] = $value->setTimezone(new \DateTimeZone('UTC'))->format("Y-m-d\TH:i:s.v\Z");
+                }
+            }
+            $data = ['json' => $fields];
+        }
+        $response = $this->call($method, $path, $data);
+
+        return true;
     }
 
     /**
