@@ -385,9 +385,6 @@ class Image extends Base
         $response = $this->call('DELETE', $path);
 
         if ('204' == $response->getStatusCode()) {
-            return $hash;
-        }
-        if ('201' == $response->getStatusCode()) {
             return $this->extractHashFromLocationHeader($response->getHeader('Location'));
         }
 
